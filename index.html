@@ -335,133 +335,179 @@ const FB_CONFIG = {
    SUBJECTS & CHAPTER DATA
 ═══════════════════════════════════════════════════════════ */
 const SUBJECTS = [
-  { id:'bangla',     name:'Bangla',        local:'বাংলা',                       color:'#2c5040' },
-  { id:'english',    name:'English',       local:'ইংরেজি',                       color:'#2a4275' },
-  { id:'math',       name:'Mathematics',   local:'গণিত',                         color:'#223060' },
-  { id:'highermath', name:'Higher Math',   local:'উচ্চতর গণিত',                  color:'#182455' },
-  { id:'physics',    name:'Physics',       local:'পদার্থবিজ্ঞান',                 color:'#402850' },
-  { id:'chemistry',  name:'Chemistry',     local:'রসায়ন',                         color:'#4a2030' },
-  { id:'biology',    name:'Biology',       local:'জীববিজ্ঞান',                    color:'#1e4a30' },
-  { id:'ict',        name:'ICT',           local:'তথ্য ও যোগাযোগ প্রযুক্তি',      color:'#4a2e10' },
-  { id:'islam',      name:'Islam Studies', local:'ইসলাম শিক্ষা',                   color:'#382a10' },
-  { id:'bgs',        name:'BGS',           local:'বাংলাদেশ ও বিশ্বপরিচয়',        color:'#10304a' },
+  { id:'bangla1',    name:'Bangla 1st Paper',   local:'বাংলা ১ম পত্র',              color:'#2c5040' },
+  { id:'bangla2',    name:'Bangla 2nd Paper',   local:'বাংলা ২য় পত্র',              color:'#1e3a2c' },
+  { id:'english1',   name:'English 1st Paper',  local:'ইংরেজি ১ম পত্র',             color:'#2a4275' },
+  { id:'english2',   name:'English 2nd Paper',  local:'ইংরেজি ২য় পত্র',             color:'#1e2e5a' },
+  { id:'math',       name:'Mathematics',        local:'গণিত',                       color:'#223060' },
+  { id:'highermath', name:'Higher Math',        local:'উচ্চতর গণিত',                color:'#182455' },
+  { id:'physics',    name:'Physics',            local:'পদার্থবিজ্ঞান',               color:'#402850' },
+  { id:'chemistry',  name:'Chemistry',          local:'রসায়ন',                       color:'#4a2030' },
+  { id:'biology',    name:'Biology',            local:'জীববিজ্ঞান',                  color:'#1e4a30' },
+  { id:'ict',        name:'ICT',               local:'তথ্য ও যোগাযোগ প্রযুক্তি',    color:'#4a2e10' },
+  { id:'islam',      name:'Islam Studies',      local:'ইসলাম শিক্ষা',                 color:'#382a10' },
+  { id:'bgs',        name:'BGS',               local:'বাংলাদেশ ও বিশ্বপরিচয়',      color:'#10304a' },
 ];
 
 const CHAPTERS_DEFAULT = {
-  bangla: [
-    {id:'bn1', name:'Prose: সুভা',                     group:'1st Paper — Prose'},
-    {id:'bn2', name:'Prose: বই পড়া',                   group:'1st Paper — Prose'},
-    {id:'bn3', name:"Prose: আম-আঁটির ভেপু",             group:'1st Paper — Prose'},
-    {id:'bn4', name:'Prose: আমার পথ',                  group:'1st Paper — Prose'},
-    {id:'bn5', name:'Prose: মানুষ মুহম্মদ (সাঃ)',        group:'1st Paper — Prose'},
-    {id:'bn6', name:'Prose: শিক্ষা ও মনুষ্যত্ব',         group:'1st Paper — Prose'},
-    {id:'bn7', name:'Prose: একাত্তরের দিনগুলি',          group:'1st Paper — Prose'},
-    {id:'bn8', name:'Poetry: বঙ্গবাণী',                 group:'1st Paper — Poetry'},
-    {id:'bn9', name:'Poetry: কপোতাক্ষ নদ',              group:'1st Paper — Poetry'},
-    {id:'bn10',name:'Poetry: জীবন-সঙ্গীত',              group:'1st Paper — Poetry'},
-    {id:'bn11',name:'Poetry: মানুষ',                   group:'1st Paper — Poetry'},
-    {id:'bn12',name:'Poetry: আমার সোনার বাংলা',         group:'1st Paper — Poetry'},
-    {id:'bn13',name:'Poetry: স্বাধীনতা এই শব্দটি',       group:'1st Paper — Poetry'},
-    {id:'bn14',name:'Grammar: ধ্বনি ও বর্ণ',            group:'2nd Paper — Grammar'},
-    {id:'bn15',name:'Grammar: শব্দ ও পদ প্রকরণ',        group:'2nd Paper — Grammar'},
-    {id:'bn16',name:'Grammar: বাক্য ও বিরাম চিহ্ন',      group:'2nd Paper — Grammar'},
-    {id:'bn17',name:'Grammar: বানান ও উচ্চারণ',          group:'2nd Paper — Grammar'},
-    {id:'bn18',name:'Writing: রচনা (Essay)',            group:'2nd Paper — Writing'},
-    {id:'bn19',name:'Writing: পত্র ও দরখাস্ত',          group:'2nd Paper — Writing'},
-    {id:'bn20',name:'Writing: সারাংশ ও সারমর্ম',         group:'2nd Paper — Writing'},
+  bangla1: [
+    {id:'b1p1', name:'Prose: প্রত্যুপকার',                        group:'গদ্য · Prose'},
+    {id:'b1p2', name:'Prose: ফুলের বিবাহ',                        group:'গদ্য · Prose'},
+    {id:'b1p3', name:'Prose: সুভা',                               group:'গদ্য · Prose'},
+    {id:'b1p4', name:'Prose: বইপড়া',                             group:'গদ্য · Prose'},
+    {id:'b1p5', name:'Prose: অভাগীর স্বর্গ',                      group:'গদ্য · Prose'},
+    {id:'b1p6', name:'Prose: পল্লিসাহিত্য',                       group:'গদ্য · Prose'},
+    {id:'b1p7', name:'Prose: আম-আঁটির ভেপু',                      group:'গদ্য · Prose'},
+    {id:'b1p8', name:'Prose: মানুষ মুহম্মদ (স)',                   group:'গদ্য · Prose'},
+    {id:'b1p9', name:'Prose: নিমগাছ',                             group:'গদ্য · Prose'},
+    {id:'b1p10',name:'Prose: উপেক্ষিত শক্তির উদ্বোধন',             group:'গদ্য · Prose'},
+    {id:'b1p11',name:'Prose: প্রবাস বন্ধু',                       group:'গদ্য · Prose'},
+    {id:'b1p12',name:'Prose: মমতাদি',                             group:'গদ্য · Prose'},
+    {id:'b1p13',name:'Prose: নিরীহ বাঙালি',                       group:'গদ্য · Prose'},
+    {id:'b1p14',name:'Prose: একুশের গল্প',                        group:'গদ্য · Prose'},
+    {id:'b1p15',name:'Prose: আমাদের নতুন গৌরবগাথা',                group:'গদ্য · Prose'},
+    {id:'b1k1', name:'Poetry: বন্দনা',                            group:'কবিতা · Poetry'},
+    {id:'b1k2', name:'Poetry: কপোতাক্ষ নদ',                       group:'কবিতা · Poetry'},
+    {id:'b1k3', name:'Poetry: প্রাণ',                             group:'কবিতা · Poetry'},
+    {id:'b1k4', name:'Poetry: অন্ধবধূ',                           group:'কবিতা · Poetry'},
+    {id:'b1k5', name:'Poetry: ঝর্নার গান',                        group:'কবিতা · Poetry'},
+    {id:'b1k6', name:'Poetry: জীবন বিনিময়',                      group:'কবিতা · Poetry'},
+    {id:'b1k7', name:'Poetry: উমর ফারুক',                         group:'কবিতা · Poetry'},
+    {id:'b1k8', name:'Poetry: সেইদিন এই মাঠ',                    group:'কবিতা · Poetry'},
+    {id:'b1k9', name:'Poetry: বৃষ্টি',                            group:'কবিতা · Poetry'},
+    {id:'b1k10',name:'Poetry: আমি কোনো আগন্তুক নই',               group:'কবিতা · Poetry'},
+    {id:'b1k11',name:'Poetry: রানার',                             group:'কবিতা · Poetry'},
+    {id:'b1k12',name:'Poetry: তোমাকে পাওয়ার জন্য, হে স্বাধীনতা',   group:'কবিতা · Poetry'},
+    {id:'b1k13',name:'Poetry: যাব আমি তোমার দেশে',                group:'কবিতা · Poetry'},
+    {id:'b1k14',name:'Poetry: আমার দেশ',                         group:'কবিতা · Poetry'},
+    {id:'b1k15',name:'Poetry: বোশেখ',                            group:'কবিতা · Poetry'},
+    {id:'b1s1', name:'Supplementary: উপন্যাস — ১৯৭১',             group:'সহপাঠ · Supplementary'},
+    {id:'b1s2', name:'Supplementary: নাটক — বহিপীর',              group:'সহপাঠ · Supplementary'},
   ],
-  english: [
-    {id:'en1', name:'Reading Comprehension (Seen)',     group:'1st Paper'},
-    {id:'en2', name:'Reading Comprehension (Unseen)',   group:'1st Paper'},
-    {id:'en3', name:'Summary Writing',                  group:'1st Paper'},
-    {id:'en4', name:'Flow Chart / Table Fill',          group:'1st Paper'},
-    {id:'en5', name:'Paragraph Writing',                group:'1st Paper'},
-    {id:'en6', name:'Email / Formal Letter',            group:'1st Paper'},
-    {id:'en7', name:'Story Writing',                    group:'1st Paper'},
-    {id:'en8', name:'Dialogue Writing',                 group:'1st Paper'},
-    {id:'en9', name:'Grammar: Articles & Prepositions', group:'2nd Paper'},
-    {id:'en10',name:'Grammar: Right Form of Verbs',     group:'2nd Paper'},
-    {id:'en11',name:'Grammar: Narration',               group:'2nd Paper'},
-    {id:'en12',name:'Grammar: Sentence Transformation', group:'2nd Paper'},
-    {id:'en13',name:'Grammar: Tag Questions',           group:'2nd Paper'},
-    {id:'en14',name:'Grammar: Completing Sentences',    group:'2nd Paper'},
-    {id:'en15',name:'Grammar: Punctuation',             group:'2nd Paper'},
-    {id:'en16',name:'Composition (2nd Paper)',          group:'2nd Paper'},
+  bangla2: [
+    {id:'b2g1', name:'Grammar: উদ্দেশ্য ও বিধেয়',                group:'ব্যাকরণ · Grammar'},
+    {id:'b2g2', name:'Grammar: সরল, জটিল ও যৌগিক বাক্য',          group:'ব্যাকরণ · Grammar'},
+    {id:'b2g3', name:'Grammar: কারক',                             group:'ব্যাকরণ · Grammar'},
+    {id:'b2g4', name:'Grammar: বাচ্য',                            group:'ব্যাকরণ · Grammar'},
+    {id:'b2g5', name:'Grammar: উক্তি',                            group:'ব্যাকরণ · Grammar'},
+    {id:'b2g6', name:'Grammar: যতিচিহ্ন',                         group:'ব্যাকরণ · Grammar'},
+    {id:'b2g7', name:'Grammar: বাগধারা (১)',                       group:'ব্যাকরণ · Grammar'},
+    {id:'b2g8', name:'Grammar: বাগধারা (২)',                       group:'ব্যাকরণ · Grammar'},
+    {id:'b2g9', name:'Grammar: প্রতিশব্দ',                        group:'ব্যাকরণ · Grammar'},
+    {id:'b2g10',name:'Grammar: বিপরীতশব্দ',                       group:'ব্যাকরণ · Grammar'},
+    {id:'b2g11',name:'Grammar: শব্দজোড়',                         group:'ব্যাকরণ · Grammar'},
+    {id:'b2c1', name:'Composition: অনুচ্ছেদ',                     group:'নির্মিতি · Composition'},
+    {id:'b2c2', name:'Composition: সারাংশ / সারমর্ম',              group:'নির্মিতি · Composition'},
+    {id:'b2c3', name:'Composition: ভাব-সম্প্রসারণ',               group:'নির্মিতি · Composition'},
+    {id:'b2c4', name:'Composition: চিঠিপত্র',                     group:'নির্মিতি · Composition'},
+    {id:'b2c5', name:'Composition: সংবাদ প্রতিবেদন',               group:'নির্মিতি · Composition'},
+    {id:'b2c6', name:'Composition: প্রবন্ধ',                      group:'নির্মিতি · Composition'},
+  ],
+  english1: [
+    {id:'e1r1', name:'Seen Passage — Units 12–16',                group:'Reading · Part A'},
+    {id:'e1r2', name:'Poems (Reading)',                           group:'Reading · Part A'},
+    {id:'e1r3', name:'Stories (Reading)',                         group:'Reading · Part A'},
+    {id:'e1r4', name:'Fill in the Gaps (without clues)',          group:'Reading · Part A'},
+    {id:'e1r5', name:'Information Transfer',                      group:'Reading · Part A'},
+    {id:'e1r6', name:'Summary Writing',                           group:'Reading · Part A'},
+    {id:'e1r7', name:'Matching',                                  group:'Reading · Part A'},
+    {id:'e1r8', name:'Rearranging Sentences',                     group:'Reading · Part A'},
+    {id:'e1w1', name:'Story Completion',                          group:'Writing · Part B'},
+    {id:'e1w2', name:'Dialogue Writing',                          group:'Writing · Part B'},
+  ],
+  english2: [
+    {id:'e2g1', name:'Grammar: Sentence',                         group:'Grammar · Part A'},
+    {id:'e2g2', name:'Grammar: Parts of Speech',                  group:'Grammar · Part A'},
+    {id:'e2g3', name:'Grammar: Tense',                            group:'Grammar · Part A'},
+    {id:'e2g4', name:'Grammar: Articles',                         group:'Grammar · Part A'},
+    {id:'e2g5', name:'Grammar: Substitution Table',               group:'Grammar · Part A'},
+    {id:'e2g6', name:'Grammar: Right Forms of Verbs',             group:'Grammar · Part A'},
+    {id:'e2g7', name:'Grammar: Changing Sentences',               group:'Grammar · Part A'},
+    {id:'e2g8', name:'Grammar: Tag Questions',                    group:'Grammar · Part A'},
+    {id:'e2g9', name:'Grammar: Prefix & Suffix',                  group:'Grammar · Part A'},
+    {id:'e2g10',name:'Grammar: Prepositions',                     group:'Grammar · Part A'},
+    {id:'e2g11',name:'Grammar: Sentence Connectors',              group:'Grammar · Part A'},
+    {id:'e2g12',name:'Grammar: Punctuation & Capitalization',     group:'Grammar · Part A'},
+    {id:'e2w1', name:'Writing: Paragraphs',                       group:'Writing · Part B'},
+    {id:'e2w2', name:'Writing: Formal Letters',                   group:'Writing · Part B'},
+    {id:'e2w3', name:'Writing: Informal Letters',                 group:'Writing · Part B'},
+    {id:'e2w4', name:'Writing: E-mails',                          group:'Writing · Part B'},
+    {id:'e2w5', name:'Writing: Compositions',                     group:'Writing · Part B'},
   ],
   math: [
-    {id:'ma2', name:'Ch 2 — Sets and Functions',    group:'Group A — Algebra'},
-    {id:'ma3', name:'Ch 3 — Algebraic Expressions',              group:'Group A — Algebra'},
-    {id:'ma4', name:'Ch 4 — Exponents and Logarithms',                group:'Group A — Algebra'},
-    {id:'ma5', name:'Ch 5 — Equations in One Variable',             group:'Group A — Algebra'},
-    {id:'ma11', name:'Ch 11 — Algebraic Ratio and Proportion',             group:'Group A — Algebra'},
-    {id:'ma5', name:'Ch 13 — Finite Series',             group:'Group A — Algebra'},
-    {id:'ma9', name:'Ch 9 — Trigonometric Ratios',     group:'Group B — Geometry & Trig'},
-    {id:'ma9', name:'Ch 14 — Ratio, Similarity and Symmetry',     group:'Group B — Geometry & Trig'},
-    {id:'ma10',name:'Ch 10 — Distance and Elevation',  group:'Group B — Geometry & Trig'},
-    {id:'ma9', name:'Ch 6 — Lines, Angles and Triangles',     group:'Group B — Geometry & Trig'},
-    {id:'ma9', name:'Ch 7 — Practical Geometry',     group:'Group B — Geometry & Trig'},
-    {id:'ma9', name:'Ch 8 — Circle',     group:'Group B — Geometry & Trig'},
-    {id:'ma16',name:'Ch 16 — Mensuration',             group:'Group C — Mensuration'},
-    {id:'ma17',name:'Ch 17 — Statistics',              group:'Group D — Statistics'},
+    {id:'ma2', name:'Ch 2 — Sets and Functions',                  group:'Group A — Algebra'},
+    {id:'ma3', name:'Ch 3 — Algebraic Expressions',               group:'Group A — Algebra'},
+    {id:'ma4', name:'Ch 4 — Exponents & Logarithms',              group:'Group A — Algebra'},
+    {id:'ma5', name:'Ch 5 — Equations in One Variable',           group:'Group A — Algebra'},
+    {id:'ma11',name:'Ch 11 — Algebraic Ratio and Proportion',     group:'Group A — Algebra'},
+    {id:'ma13',name:'Ch 13 — Finite Series',                      group:'Group A — Algebra'},
+    {id:'ma6', name:'Ch 6 — Lines, Angles & Triangles',           group:'Group B — Geometry'},
+    {id:'ma7', name:'Ch 7 — Practical Geometry',                  group:'Group B — Geometry'},
+    {id:'ma8', name:'Ch 8 — Circle',                              group:'Group B — Geometry'},
+    {id:'ma14',name:'Ch 14 — Ratio, Similarity and Symmetry',     group:'Group B — Geometry'},
+    {id:'ma9', name:'Ch 9 — Trigonometric Ratios',                group:'Group C — Trigonometry & Mensuration'},
+    {id:'ma10',name:'Ch 10 — Distance and Elevation',             group:'Group C — Trigonometry & Mensuration'},
+    {id:'ma16',name:'Ch 16 — Mensuration',                        group:'Group C — Trigonometry & Mensuration'},
+    {id:'ma17',name:'Ch 17 — Statistics',                         group:'Group D — Statistics'},
   ],
   highermath: [
     {id:'hm1', name:'Ch 1 — Set and Function',                    group:'Group A — Algebra'},
     {id:'hm2', name:'Ch 2 — Algebraic Expression',                group:'Group A — Algebra'},
     {id:'hm7', name:'Ch 7 — Infinite Series',                     group:'Group A — Algebra'},
-    {id:'hm9', name:'Ch 9 — Exponential & Logarithmic Function',  group:'Group A — Algebra'},
+    {id:'hm9', name:'Ch 9 — Exponential and Logarithmic Function',group:'Group A — Algebra'},
     {id:'hm10',name:'Ch 10 — Binomial Expression',                group:'Group A — Algebra'},
     {id:'hm3', name:'Ch 3 — Geometry',                            group:'Group B — Geometry'},
     {id:'hm4', name:'Ch 4 — Geometric Constructions',             group:'Group B — Geometry'},
     {id:'hm11',name:'Ch 11 — Coordinate Geometry',                group:'Group B — Geometry'},
     {id:'hm13',name:'Ch 13 — Solid Geometry',                     group:'Group B — Geometry'},
-    {id:'hm8', name:'Ch 8 — Trigonometry',                        group:'Group C — Trig & Prob'},
-    {id:'hm14',name:'Ch 14 — Probability',                        group:'Group C — Trig & Prob'},
+    {id:'hm8', name:'Ch 8 — Trigonometry',                        group:'Group C — Trigonometry & Probability'},
+    {id:'hm14',name:'Ch 14 — Probability',                        group:'Group C — Trigonometry & Probability'},
   ],
   physics: [
-    {id:'ph1', name:'Ch 1 — Physical Quantities & Measurement',  group:'Chapters'},
-    {id:'ph4', name:'Ch 4 — Work, Power & Energy',               group:'Chapters'},
-    {id:'ph5', name:'Ch 5 — States of Matter & Pressure',        group:'Chapters'},
-    {id:'ph7', name:'Ch 7 — Waves & Sound',                      group:'Chapters'},
-    {id:'ph8', name:'Ch 8 — Reflection of Light',                group:'Chapters'},
-    {id:'ph9', name:'Ch 9 — Refraction of Light',                group:'Chapters'},
-    {id:'ph10',name:'Ch 10 — Static Electricity',                group:'Chapters'},
-    {id:'ph11',name:'Ch 11 — Current Electricity',               group:'Chapters'},
+    {id:'ph1', name:'Ch 1 — Physical Quantities & Measurement',   group:'Chapters'},
+    {id:'ph4', name:'Ch 4 — Work, Power & Energy',                group:'Chapters'},
+    {id:'ph5', name:'Ch 5 — States of Matter & Pressure',         group:'Chapters'},
+    {id:'ph7', name:'Ch 7 — Waves & Sound',                       group:'Chapters'},
+    {id:'ph8', name:'Ch 8 — Reflection of Light',                 group:'Chapters'},
+    {id:'ph9', name:'Ch 9 — Refraction of Light',                 group:'Chapters'},
+    {id:'ph10',name:'Ch 10 — Static Electricity',                 group:'Chapters'},
+    {id:'ph11',name:'Ch 11 — Current Electricity',                group:'Chapters'},
   ],
   chemistry: [
-    {id:'ch4', name:'Ch 4 — Periodic Table',                     group:'Chapters'},
-    {id:'ch5', name:'Ch 5 — Chemical Bond',                      group:'Chapters'},
-    {id:'ch6', name:'Ch 6 — Mole Concept & Chemical Counting',   group:'Chapters'},
-    {id:'ch7', name:'Ch 7 — Chemical Reaction',                  group:'Chapters'},
-    {id:'ch8', name:'Ch 8 — Chemistry & Energy',                 group:'Chapters'},
-    {id:'ch11',name:'Ch 11 — Mineral Resources: Fossil Fuels',   group:'Chapters'},
-    {id:'ch12',name:'Ch 12 — Chemistry in Our Lives',            group:'Chapters'},
+    {id:'ch4', name:'Ch 4 — Periodic Table',                      group:'Chapters'},
+    {id:'ch5', name:'Ch 5 — Chemical Bond',                       group:'Chapters'},
+    {id:'ch6', name:'Ch 6 — Mole Concept & Chemical Counting',    group:'Chapters'},
+    {id:'ch7', name:'Ch 7 — Chemical Reaction',                   group:'Chapters'},
+    {id:'ch8', name:'Ch 8 — Chemistry & Energy',                  group:'Chapters'},
+    {id:'ch11',name:'Ch 11 — Mineral Resources – Fossil Fuels',   group:'Chapters'},
+    {id:'ch12',name:'Ch 12 — Chemistry in Our Lives',             group:'Chapters'},
   ],
   biology: [
-    {id:'bi1', name:'Ch 1 — Introduction to Biology',    group:'Chapters'},
-    {id:'bi2', name:'Ch 2 — Cell & Tissues',             group:'Chapters'},
-    {id:'bi3', name:'Ch 3 — Cell Division',              group:'Chapters'},
-    {id:'bi4', name:'Ch 4 — Bioenergetics',              group:'Chapters'},
-    {id:'bi5', name:'Ch 5 — Food, Nutrition & Digestion',group:'Chapters'},
-    {id:'bi6', name:'Ch 6 — Transport in Organisms',     group:'Chapters'},
-    {id:'bi7', name:'Ch 7 — Gas Exchange',               group:'Chapters'},
-    {id:'bi8', name:'Ch 8 — Excretory System',           group:'Chapters'},
-    {id:'bi9', name:'Ch 9 — Support & Movement',         group:'Chapters'},
-    {id:'bi10',name:'Ch 10 — Coordination',              group:'Chapters'},
-    {id:'bi11',name:'Ch 11 — Reproduction',              group:'Chapters'},
-    {id:'bi12',name:'Ch 12 — Heredity & Evolution',      group:'Chapters'},
-    {id:'bi13',name:'Ch 13 — Ecology',                   group:'Chapters'},
+    {id:'bi1', name:'Ch 1 — Introduction to Biology',             group:'Chapters'},
+    {id:'bi2', name:'Ch 2 — Cell & Tissues',                      group:'Chapters'},
+    {id:'bi3', name:'Ch 3 — Cell Division',                       group:'Chapters'},
+    {id:'bi4', name:'Ch 4 — Bioenergetics',                       group:'Chapters'},
+    {id:'bi5', name:'Ch 5 — Food, Nutrition & Digestion',         group:'Chapters'},
+    {id:'bi6', name:'Ch 6 — Transport in Organisms',              group:'Chapters'},
+    {id:'bi7', name:'Ch 7 — Gas Exchange',                        group:'Chapters'},
+    {id:'bi8', name:'Ch 8 — Excretory System',                    group:'Chapters'},
+    {id:'bi9', name:'Ch 9 — Support & Movement',                  group:'Chapters'},
+    {id:'bi10',name:'Ch 10 — Coordination',                       group:'Chapters'},
+    {id:'bi11',name:'Ch 11 — Reproduction',                       group:'Chapters'},
+    {id:'bi12',name:'Ch 12 — Heredity & Evolution',               group:'Chapters'},
+    {id:'bi13',name:'Ch 13 — Ecology',                            group:'Chapters'},
   ],
   ict: [
-    {id:'ic4', name:'Ch 4 — My Writing & Accounts',                group:'Chapters'},
-    {id:'ic5', name:'Ch 5 — Multimedia & Graphics',                group:'Chapters'},
-    {id:'ic6', name:'Ch 6 — Problem Solving through Programming',  group:'Chapters'},
+    {id:'ic4', name:'Ch 4 — My Writing & Accounts',               group:'Chapters'},
+    {id:'ic5', name:'Ch 5 — Multimedia & Graphics',               group:'Chapters'},
+    {id:'ic6', name:'Ch 6 — Problem Solving through Programming', group:'Chapters'},
   ],
   islam: [
-    {id:'is1', name:'Ch 1 — Aqaid and Moral Life',  group:'Chapters'},
-    {id:'is2', name:'Ch 2 — Sources of Shariah',    group:'Chapters'},
-    {id:'is3', name:'Ch 3 — Ibadat',                group:'Chapters'},
-    {id:'is4', name:'Ch 4 — Akhlaq',                group:'Chapters'},
-    {id:'is5', name:'Ch 5 — Ideal Lives',           group:'Chapters'},
+    {id:'is1', name:'Ch 1 — Aqaid and Moral Life',                group:'Chapters'},
+    {id:'is2', name:'Ch 2 — Sources of Shariah',                  group:'Chapters'},
+    {id:'is3', name:'Ch 3 — Ibadat',                              group:'Chapters'},
+    {id:'is4', name:'Ch 4 — Akhlaq',                              group:'Chapters'},
+    {id:'is5', name:'Ch 5 — Ideal Lives',                         group:'Chapters'},
   ],
   bgs: [
     {id:'bg1', name:'Ch 1 — Political Movement & Rise of Nationalism (1947–70)', group:'Chapters'},
@@ -543,17 +589,38 @@ function getPrioritySuggestions(chapters, weaknesses, examDate) {
       const remaining = 1 - prog/100;
       const weakness = (weaknesses[c.subject]||50)/100;
       const est = parseFloat(c.daysEstimate)||1;
-      const score = weakness * remaining * est * (100/daysLeft);
+      // In-progress chapters get a small boost so they get finished first
+      const inProgressBoost = c.status==='in-progress' ? 1.25 : 1;
+      const score = weakness * remaining * est * (100/daysLeft) * inProgressBoost;
       const subj = SUBJECTS.find(s=>s.id===c.subject);
       return { id, ...c, score, remaining, subjName: subj?.name||c.subject, subjColor: subj?.color||'#444' };
     })
     .sort((a,b) => b.score-a.score);
-  const out = []; const seen = new Set();
+
+  // Pick up to 7, max 2 per subject — round-robin across top subjects
+  const out = [];
+  const subjectCount = {};
+  const MAX_TOTAL = 7;
+  const MAX_PER_SUBJECT = 2;
+
+  // First pass: 1 per subject (highest priority item)
   for (const ch of scored) {
-    if (out.length >= 3) break;
-    if (!seen.has(ch.subject) || out.length < 2) { out.push(ch); seen.add(ch.subject); }
+    if (out.length >= MAX_TOTAL) break;
+    if (!subjectCount[ch.subject]) {
+      out.push(ch);
+      subjectCount[ch.subject] = 1;
+    }
   }
-  return out;
+  // Second pass: allow a 2nd item per subject if we still have slots
+  for (const ch of scored) {
+    if (out.length >= MAX_TOTAL) break;
+    if ((subjectCount[ch.subject]||0) < MAX_PER_SUBJECT && !out.find(o=>o.id===ch.id)) {
+      out.push(ch);
+      subjectCount[ch.subject] = (subjectCount[ch.subject]||0) + 1;
+    }
+  }
+  // Sort final list by score descending for display
+  return out.sort((a,b)=>b.score-a.score);
 }
 
 function buildBurnupData(chapters, snapshots, examDate, setupDate, holidays) {
@@ -1122,7 +1189,7 @@ function Dashboard({ data, onUpdate }) {
             <span className="muted text-xs">Based on weakness & deadline pressure</span>
           </div>
         </div>
-        <div style={{padding:'12px 18px 18px',display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(240px,1fr))',gap:10}}>
+        <div style={{padding:'12px 18px 18px',display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(200px,1fr))',gap:10}}>
           {suggestions.length===0 && <div className="muted text-sm">All chapters complete or skipped 🎉</div>}
           {suggestions.map((ch,i)=>{
             const sub = SUBJECTS.find(s=>s.id===ch.subject);
