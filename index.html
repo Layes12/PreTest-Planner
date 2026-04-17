@@ -628,7 +628,7 @@ function buildBurnupData(chapters, snapshots, examDate, setupDate, holidays) {
   const hSet = new Set(holidays||[]);
   const start = new Date(setupDate);
   const exam  = new Date(examDate);
-  const t     = todayDate();
+  const tStr  = todayStr(); // YYYY-MM-DD string — timezone-safe comparison
   const { total } = calcTotalWork(chapters);
   if (!total) return null;
 
@@ -645,14 +645,19 @@ function buildBurnupData(chapters, snapshots, examDate, setupDate, holidays) {
 
   const currentDone = Object.values(chapters).filter(c=>c.track!=='skip')
     .reduce((s,c) => { const p=c.status==='done'?100:(c.progress||0); return s+(parseFloat(c.daysEstimate)||1)*p/100; },0);
-  const tStr = todayStr();
+
+  // Merge live current value into snapshots so today always shows
   const allSnaps = { ...(snapshots||{}), [tStr]: { total: currentDone } };
 
   let last = 0;
   const actualLine = dates.map(d => {
-    if (new Date(d) > t) return null;
-    if (allSnaps[d] !== undefined) last = allSnaps[d].total;
-    return parseFloat(last.toFixed(2));
+    if (d > tStr) return null; // string compare: future dates are null
+    const snap = allSnaps[d];
+    if (snap !== undefined && snap !== null) {
+      // Support both {total:n} shape and plain number (legacy)
+      last = typeof snap === 'object' ? (snap.total ?? snap) : snap;
+    }
+    return parseFloat((last||0).toFixed(2));
   });
 
   return { dates, targetLine, actualLine, total };
@@ -663,7 +668,7 @@ function buildSubjectBurnupData(chapters, snapshots, examDate, setupDate, holida
   const hSet = new Set(holidays||[]);
   const start = new Date(setupDate);
   const exam  = new Date(examDate);
-  const t     = todayDate();
+  const tStr  = todayStr(); // string comparison — timezone-safe
   const { total } = calcSubjectWork(chapters, subjectId);
   if (!total) return null;
 
@@ -673,7 +678,6 @@ function buildSubjectBurnupData(chapters, snapshots, examDate, setupDate, holida
 
   const wdTotal = workingDaysBetween(setupDate, examDate, holidays);
   let wdPassed = 0;
-  const subjectFraction = total / Math.max(0.001, calcTotalWork(chapters).total);
   const targetLine = dates.map(d => {
     if (!hSet.has(d)) wdPassed++;
     return Math.min(total, (wdPassed/Math.max(1,wdTotal))*total);
@@ -683,14 +687,16 @@ function buildSubjectBurnupData(chapters, snapshots, examDate, setupDate, holida
     .filter(c=>c.subject===subjectId && c.track!=='skip')
     .reduce((s,c)=>{ const p=c.status==='done'?100:(c.progress||0); return s+(parseFloat(c.daysEstimate)||1)*p/100; },0);
 
-  const tStr = todayStr();
   let last = 0;
   const actualLine = dates.map(d => {
-    if (new Date(d) > t) return null;
+    if (d > tStr) return null; // string compare: future dates are null
     const snap = (snapshots||{})[d];
-    if (snap?.bySubject?.[subjectId] !== undefined) last = snap.bySubject[subjectId];
-    else if (d === tStr) last = currentDone;
-    return parseFloat(last.toFixed(2));
+    if (snap?.bySubject?.[subjectId] !== undefined) {
+      last = snap.bySubject[subjectId];
+    } else if (d === tStr) {
+      last = currentDone;
+    }
+    return parseFloat((last||0).toFixed(2));
   });
 
   return { dates, targetLine, actualLine, total };
