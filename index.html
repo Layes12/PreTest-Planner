@@ -628,7 +628,7 @@ function buildBurnupData(chapters, snapshots, examDate, setupDate, holidays) {
   const hSet = new Set(holidays||[]);
   const start = new Date(setupDate);
   const exam  = new Date(examDate);
-  const tStr  = todayStr(); // YYYY-MM-DD string — timezone-safe comparison
+  const tStr  = todayStr();
   const { total } = calcTotalWork(chapters);
   if (!total) return null;
 
@@ -646,21 +646,39 @@ function buildBurnupData(chapters, snapshots, examDate, setupDate, holidays) {
   const currentDone = Object.values(chapters).filter(c=>c.track!=='skip')
     .reduce((s,c) => { const p=c.status==='done'?100:(c.progress||0); return s+(parseFloat(c.daysEstimate)||1)*p/100; },0);
 
-  // Merge live current value into snapshots so today always shows
   const allSnaps = { ...(snapshots||{}), [tStr]: { total: currentDone } };
 
   let last = 0;
   const actualLine = dates.map(d => {
-    if (d > tStr) return null; // string compare: future dates are null
+    if (d > tStr) return null;
     const snap = allSnaps[d];
     if (snap !== undefined && snap !== null) {
-      // Support both {total:n} shape and plain number (legacy)
       last = typeof snap === 'object' ? (snap.total ?? snap) : snap;
     }
     return parseFloat((last||0).toFixed(2));
   });
 
-  return { dates, targetLine, actualLine, total };
+  // ── PROJECTION: compute daily rate from last 14 days of actual data ──
+  const todayIdx = dates.indexOf(tStr);
+  let projectionLine = dates.map(() => null);
+  if (todayIdx >= 0) {
+    const lookback = Math.max(0, todayIdx - 14);
+    const pastSnap = allSnaps[dates[lookback]];
+    const pastVal  = pastSnap !== undefined ? (typeof pastSnap==='object' ? (pastSnap.total??0) : pastSnap) : 0;
+    const daySpan  = Math.max(1, todayIdx - lookback);
+    const dailyRate = (currentDone - pastVal) / daySpan;
+
+    if (dailyRate > 0) {
+      // Anchor the projection starting exactly at today's actual value
+      projectionLine = dates.map((d, i) => {
+        if (i < todayIdx) return null; // before today — don't draw
+        const daysAhead = i - todayIdx;
+        return parseFloat(Math.min(total, currentDone + dailyRate * daysAhead).toFixed(2));
+      });
+    }
+  }
+
+  return { dates, targetLine, actualLine, projectionLine, total };
 }
 
 function buildSubjectBurnupData(chapters, snapshots, examDate, setupDate, holidays, subjectId) {
@@ -689,7 +707,7 @@ function buildSubjectBurnupData(chapters, snapshots, examDate, setupDate, holida
 
   let last = 0;
   const actualLine = dates.map(d => {
-    if (d > tStr) return null; // string compare: future dates are null
+    if (d > tStr) return null;
     const snap = (snapshots||{})[d];
     if (snap?.bySubject?.[subjectId] !== undefined) {
       last = snap.bySubject[subjectId];
@@ -699,7 +717,25 @@ function buildSubjectBurnupData(chapters, snapshots, examDate, setupDate, holida
     return parseFloat((last||0).toFixed(2));
   });
 
-  return { dates, targetLine, actualLine, total };
+  // PROJECTION: daily rate from last 14 days of actual subject data
+  const todayIdx = dates.indexOf(tStr);
+  let projectionLine = dates.map(() => null);
+  if (todayIdx >= 0) {
+    const lookback = Math.max(0, todayIdx - 14);
+    const pastSnap  = (snapshots||{})[dates[lookback]];
+    const pastVal   = pastSnap?.bySubject?.[subjectId] ?? 0;
+    const daySpan   = Math.max(1, todayIdx - lookback);
+    const dailyRate = (currentDone - pastVal) / daySpan;
+    if (dailyRate > 0) {
+      projectionLine = dates.map((d, i) => {
+        if (i < todayIdx) return null;
+        const daysAhead = i - todayIdx;
+        return parseFloat(Math.min(total, currentDone + dailyRate * daysAhead).toFixed(2));
+      });
+    }
+  }
+
+  return { dates, targetLine, actualLine, projectionLine, total };
 }
 
 function takeSnapshot(chapters) {
@@ -734,51 +770,118 @@ function BurnupChart({ data, color, title }) {
   useEffect(() => {
     if (!canvasRef.current || !data) return;
     if (chartInst.current) { chartInst.current.destroy(); chartInst.current = null; }
-    const { dates, targetLine, actualLine, total } = data;
-    // Show every Nth label to avoid crowding
-    const N = Math.max(1, Math.floor(dates.length/10));
-    const labels = dates.map((d,i) => (i%N===0) ? d.slice(5) : '');
+    const { dates, targetLine, actualLine, projectionLine, total } = data;
+
+    // Vivid solid color for actual progress; derive projection as semi-transparent version
+    const solid  = color || '#00e5a0';
+    const projC  = solid + 'aa';          // ~67% opacity for the dotted projection
+    const fillC  = solid + '28';          // subtle fill under actual line
+
+    // Tick label every ~10% of timeline
+    const N = Math.max(1, Math.floor(dates.length / 10));
+    const labels = dates.map((d, i) => (i % N === 0) ? d.slice(5) : '');
 
     chartInst.current = new Chart(canvasRef.current, {
       type: 'line',
       data: {
         labels,
         datasets: [
-          { label:'Scope', data: dates.map(()=>total),
-            borderColor:'#2d3352', borderWidth:1, borderDash:[6,4],
-            pointRadius:0, fill:false, tension:0 },
-          { label:'Target Pace', data: targetLine,
-            borderColor:'#c8a96e', borderWidth:1.5, borderDash:[4,3],
-            pointRadius:0, fill:false, tension:0 },
-          { label:'Actual Progress', data: actualLine,
-            borderColor: color||'#5abf80',
-            backgroundColor: (color||'#5abf80')+'22',
-            borderWidth:2, pointRadius:0, fill:true, tension:0.3,
-            spanGaps: false },
+          {
+            label: 'Scope',
+            data: dates.map(() => total),
+            borderColor: '#3a4060',
+            borderWidth: 1,
+            borderDash: [6, 4],
+            pointRadius: 0,
+            fill: false,
+            tension: 0,
+          },
+          {
+            label: 'Target Pace',
+            data: targetLine,
+            borderColor: '#f0c040',   // bright gold — clearly visible
+            borderWidth: 2,
+            borderDash: [5, 4],
+            pointRadius: 0,
+            fill: false,
+            tension: 0,
+          },
+          {
+            label: 'Actual Progress',
+            data: actualLine,
+            borderColor: solid,
+            backgroundColor: fillC,
+            borderWidth: 2.5,
+            pointRadius: 0,
+            fill: true,
+            tension: 0.25,
+            spanGaps: false,
+          },
+          {
+            label: 'Projected (current rate)',
+            data: projectionLine,
+            borderColor: projC,
+            borderWidth: 2,
+            borderDash: [5, 5],
+            pointRadius: 0,
+            fill: false,
+            tension: 0.1,
+            spanGaps: false,
+          },
         ]
       },
       options: {
-        responsive: true, maintainAspectRatio: false,
-        interaction: { mode:'index', intersect:false },
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
         scales: {
-          x: { grid:{color:'#1e2438'}, ticks:{color:'#555e80',maxRotation:0,font:{size:10}}, border:{color:'#1e2438'} },
-          y: { min:0, max: Math.ceil(total*1.05), grid:{color:'#1e2438'},
-               ticks:{color:'#555e80',font:{size:10}}, border:{color:'#1e2438'} }
+          x: {
+            grid: { color: '#1e2438' },
+            ticks: { color: '#7080a0', maxRotation: 0, font: { size: 10 } },
+            border: { color: '#2a3050' },
+          },
+          y: {
+            min: 0,
+            max: Math.ceil(total * 1.05),
+            grid: { color: '#1e2438' },
+            ticks: { color: '#7080a0', font: { size: 10 } },
+            border: { color: '#2a3050' },
+          }
         },
         plugins: {
-          legend:{ labels:{ color:'#8890b0', boxWidth:14, font:{size:11}, padding:16 } },
-          tooltip:{ backgroundColor:'#1a1d2e', titleColor:'#e2e4f0', bodyColor:'#8890b0',
-                    borderColor:'#2a3050', borderWidth:1 }
+          legend: {
+            labels: {
+              color: '#a0a8cc',
+              boxWidth: 14,
+              font: { size: 11 },
+              padding: 16,
+              // Filter out projection from legend when there's no data for it
+              filter: (item, chartData) => {
+                if (item.text === 'Projected (current rate)') {
+                  const ds = chartData.datasets[3];
+                  return ds && ds.data.some(v => v !== null);
+                }
+                return true;
+              }
+            }
+          },
+          tooltip: {
+            backgroundColor: '#1a1d2e',
+            titleColor: '#e2e4f0',
+            bodyColor: '#9098c0',
+            borderColor: '#2a3050',
+            borderWidth: 1,
+          }
         }
       }
     });
-    return () => { if (chartInst.current) { chartInst.current.destroy(); chartInst.current=null; } };
+    return () => { if (chartInst.current) { chartInst.current.destroy(); chartInst.current = null; } };
   }, [data, color]);
 
   return (
     <div>
-      {title && <div className="font-600 text-sm muted" style={{marginBottom:10}}>{title}</div>}
-      <div className="chart-wrap" style={{height:240}}>
+      {title && <div className="font-600 text-sm muted" style={{marginBottom: 10}}>{title}</div>}
+      <div className="chart-wrap" style={{height: 240}}>
         <canvas ref={canvasRef} />
       </div>
     </div>
@@ -1355,7 +1458,7 @@ function Stats({ data }) {
         <div className="serif" style={{fontSize:20,fontWeight:700,marginBottom:4}}>Overall Burnup Chart</div>
         <div className="muted text-sm" style={{marginBottom:14}}>Cumulative study days completed vs target pace</div>
         {combinedData
-          ? <BurnupChart data={combinedData} color="#c8a96e" />
+          ? <BurnupChart data={combinedData} color="#00e5a0" />
           : <div className="empty-state"><div className="empty-icon">📊</div><div>No data yet — start studying!</div></div>}
       </div>
 
@@ -1369,22 +1472,38 @@ function Stats({ data }) {
         {showSubjects && (
           <div style={{padding:'0 18px 18px',display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(320px,1fr))',gap:18}}>
             {SUBJECTS.map(sub=>{
+              // Each subject gets a vivid, distinct chart line color
+              const vividColors = {
+                bangla1:    '#ff6b8a',
+                bangla2:    '#ff9eb5',
+                english1:   '#4dd8ff',
+                english2:   '#80e8ff',
+                math:       '#a78bfa',
+                highermath: '#c4b5fd',
+                physics:    '#fbbf24',
+                chemistry:  '#f97316',
+                biology:    '#34d399',
+                ict:        '#60a5fa',
+                islam:      '#e879f9',
+                bgs:        '#6ee7b7',
+              };
+              const vividColor = vividColors[sub.id] || '#00e5a0';
               const sd = buildSubjectBurnupData(chapters,snapshots,examDate,setupDate,holidays,sub.id);
               if (!sd || !sd.total) return (
                 <div key={sub.id} style={{background:'var(--s2)',borderRadius:8,padding:14}}>
-                  <div style={{fontSize:13,fontWeight:600,color:sub.color,marginBottom:6}}>{sub.name}</div>
+                  <div style={{fontSize:13,fontWeight:600,color:vividColor,marginBottom:6}}>{sub.name}</div>
                   <div className="muted text-xs">No active chapters</div>
                 </div>
               );
               return (
                 <div key={sub.id} style={{background:'var(--s2)',borderRadius:8,padding:14}}>
-                  <div style={{fontSize:13,fontWeight:700,color:'#fff',marginBottom:2}}>{sub.name}
+                  <div style={{fontSize:13,fontWeight:700,color:vividColor,marginBottom:2}}>{sub.name}
                     <span className="muted text-xs" style={{marginLeft:6}}>{sub.local}</span>
                   </div>
                   <div className="muted text-xs" style={{marginBottom:8}}>
                     {calcSubjectWork(chapters,sub.id).done.toFixed(1)} / {sd.total.toFixed(1)} days
                   </div>
-                  <BurnupChart data={sd} color={sub.color} />
+                  <BurnupChart data={sd} color={vividColor} />
                 </div>
               );
             })}
